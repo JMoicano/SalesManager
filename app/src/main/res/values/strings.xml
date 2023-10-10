@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Sales Manager</string>
+    <string name="make_a_sell">Fazer uma venda</string>
+    <string name="expand">expand</string>
+    <string name="sale_number">Número do pedido: %1$s</string>
+    <string name="sale_quant_items">Quantidade total de itens: %1$s</string>
+    <string name="sale_total_price">Valor total do pedido: %1$s</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+    <string name="product">Produto</string>
+    <string name="item_price">Valor total do item: %1$s</string>
+    <string name="include">Incluir</string>
+    <string name="costumer">Cliente</string>
+    <string name="write_costumer_name">Escrever nome do cliente</string>
+    <string name="product_name">Nome</string>
+    <string name="product_quant">Quantidade</string>
+    <string name="product_unit_price">Valor unitário</string>
+</resources>
