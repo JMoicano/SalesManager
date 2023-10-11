@@ -8,7 +8,7 @@ import dev.jmoicano.salesmanager.ui.data.ViewProduct
 data class Product(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    val quant: Int,
+    val quant: Double,
     val unitPrice: Double,
     val saleId: Long
 )

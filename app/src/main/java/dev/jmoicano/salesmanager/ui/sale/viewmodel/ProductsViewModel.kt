@@ -37,8 +37,11 @@ class ProductsViewModel @Inject constructor(private val productsRepository: Prod
     var productPrice by mutableStateOf("")
         private set
 
+    var saleDiscount by mutableStateOf("")
+        private set
+
     var itemPrice by mutableDoubleStateOf(
-        (productQuant.toIntOrNull() ?: 0) * (productPrice.toDoubleOrNull() ?: 0.0)
+        (productQuant.toDoubleOrNull() ?: 0.0) * (productPrice.toDoubleOrNull() ?: 0.0)
     )
 
     fun updateClientName(name: String) {
@@ -51,15 +54,21 @@ class ProductsViewModel @Inject constructor(private val productsRepository: Prod
 
     fun updateQuant(quant: String) {
         productQuant = quant
-        itemPrice = (productQuant.toIntOrNull() ?: 0) * (productPrice.toDoubleOrNull() ?: 0.0)
+        itemPrice = (productQuant.toDoubleOrNull() ?: 0.0) * (productPrice.toDoubleOrNull() ?: 0.0)
     }
 
     fun updatePrice(price: String) {
         productPrice = price
-        itemPrice = (productQuant.toIntOrNull() ?: 0) * (productPrice.toDoubleOrNull() ?: 0.0)
+        itemPrice = (productQuant.toDoubleOrNull() ?: 0.0) * (productPrice.toDoubleOrNull() ?: 0.0)
+    }
+
+    fun updateDiscount(discount: String) {
+        saleDiscount = discount
     }
 
     fun resetSale() {
+        clientName = ""
+        saleDiscount = ""
         resetFields()
         _uiState.update {
             ProductUiState()
@@ -79,10 +88,32 @@ class ProductsViewModel @Inject constructor(private val productsRepository: Prod
             productsRepository.insertSale(
                 ViewSale(
                     client = clientName,
-                    products = _uiState.value.products
+                    products = _uiState.value.products,
+                    discount = _uiState.value.discount
                 )
             )
             resetSale()
+        }
+    }
+
+    fun applyDiscount() {
+        _uiState.update {currentState ->
+            currentState.copy(
+                discount = saleDiscount.toDouble(),
+            )
+        }
+        rateDiscount()
+    }
+
+    private fun rateDiscount() {
+        val currentProducts = _uiState.value.products.toMutableList()
+        _uiState.update {currentState ->
+            currentState.copy(
+                products = currentProducts.onEach {
+                    val productRate = it.totalValue / _uiState.value.totalPrice
+                    it.discount = _uiState.value.discount * productRate
+                }
+            )
         }
     }
 
@@ -94,13 +125,14 @@ class ProductsViewModel @Inject constructor(private val productsRepository: Prod
                     add(
                         ViewProduct(
                             name = productName,
-                            quant = productQuant.toInt(),
+                            quant = productQuant.toDouble(),
                             unitPrice = productPrice.toDouble()
                         )
                     )
                 }
             )
         }
+        rateDiscount()
         resetFields()
     }
 

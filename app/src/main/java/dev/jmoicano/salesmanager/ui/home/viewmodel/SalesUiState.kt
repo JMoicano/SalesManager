@@ -6,5 +6,5 @@ data class SalesUiState(
     val sales: List<ViewSale> = listOf()
 ) {
     val totalEarnings: Double =
-        sales.sumOf { it.salesTotal }
+        sales.sumOf { it.salesFinal }
 }

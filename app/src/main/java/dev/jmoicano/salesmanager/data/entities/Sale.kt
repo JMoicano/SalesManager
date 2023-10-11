@@ -11,7 +11,8 @@ import dev.jmoicano.salesmanager.ui.data.ViewSale
 @Entity
 data class Sale(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "client") val client: String
+    @ColumnInfo(name = "client") val client: String,
+    val discount: Double
 )
 
 data class SaleWithProducts(
@@ -24,4 +25,4 @@ data class SaleWithProducts(
 )
 
 fun SaleWithProducts.mapDto(): ViewSale =
-    ViewSale(client = sale.client, products = products.map { it.mapDto() })
+    ViewSale(client = sale.client,discount = sale.discount, products = products.map { it.mapDto() })

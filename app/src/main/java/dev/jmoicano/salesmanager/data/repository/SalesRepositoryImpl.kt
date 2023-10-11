@@ -16,6 +16,6 @@ class SalesRepositoryImpl(
     }
 
     override suspend fun createSale(sale: ViewSale) {
-        salesDao.insertSale(Sale(client = sale.client))
+        salesDao.insertSale(Sale(client = sale.client, discount = sale.discount))
     }
 }

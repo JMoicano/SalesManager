@@ -80,12 +80,14 @@ fun HomeScreen(
 @Composable
 fun Sale(sale: ViewSale) {
     var expanded by remember { mutableStateOf(false) }
+    val discount = sale.discount
+    val totalSale = sale.salesTotal
     Card(modifier = Modifier.padding(vertical = 5.dp)) {
         Column(modifier = Modifier.padding(5.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Column(modifier = Modifier.weight(1F)) {
                     Text(text = sale.client)
-                    Text(text = sale.salesTotal.currencyFormat())
+                    Text(text = sale.salesFinal.currencyFormat())
                 }
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
@@ -98,6 +100,8 @@ fun Sale(sale: ViewSale) {
             }
             if (expanded) {
                 sale.products.forEach { product ->
+                    val rate = product.totalValue / totalSale
+                    product.discount = discount * rate
                     Product(product = product)
                 }
             }
@@ -112,6 +116,6 @@ fun Product(product: ViewProduct) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = "${product.quant} ${product.name}")
-        Text(text = product.totalValue.currencyFormat())
+        Text(text = product.finalValue.currencyFormat())
     }
 }

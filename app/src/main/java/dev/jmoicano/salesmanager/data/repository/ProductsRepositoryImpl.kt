@@ -13,7 +13,8 @@ class ProductsRepositoryImpl(
     override suspend fun insertSale(sale: ViewSale) {
         val saleId = salesDao.insertSale(
             Sale(
-                client = sale.client
+                client = sale.client,
+                discount = sale.discount
             )
         )
         salesDao.insertProducts(sale.products.map {

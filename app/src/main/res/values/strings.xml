@@ -15,4 +15,7 @@
     <string name="product_name">Nome</string>
     <string name="product_quant">Quantidade</string>
     <string name="product_unit_price">Valor unitário</string>
+    <string name="discount">Desconto</string>
+    <string name="apply">Aplicar</string>
+    <string name="discount_label">Desconto: %1$s</string>
 </resources>

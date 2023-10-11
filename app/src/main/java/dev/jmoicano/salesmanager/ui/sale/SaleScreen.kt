@@ -72,7 +72,32 @@ fun SaleScreen(
 
         Divider(modifier = Modifier.padding(vertical = 10.dp))
 
+        DiscountSection(viewModel)
+
+        Divider(modifier = Modifier.padding(vertical = 10.dp))
+
         ActionSection(modifier = Modifier.align(Alignment.End), viewModel, navController)
+    }
+}
+
+@Composable
+private fun DiscountSection(viewModel: ProductsViewModel) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        OutlinedTextField(
+            value = viewModel.saleDiscount,
+            onValueChange = viewModel::updateDiscount,
+            label = {
+                Text(text = stringResource(R.string.discount))
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            )
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        Button(onClick = { viewModel.applyDiscount() }) {
+            Text(text = stringResource(R.string.apply))
+        }
     }
 }
 
@@ -112,9 +137,10 @@ private fun SaleSection(uiState: ProductUiState) {
         Text(
             text = stringResource(
                 R.string.sale_total_price,
-                uiState.totalPrice.currencyFormat()
+                uiState.finalPrice.currencyFormat()
             )
         )
+        Text(text = stringResource(R.string.discount_label, uiState.discount.currencyFormat()))
     }
 }
 
@@ -153,7 +179,7 @@ private fun ProductsSection(
                         Text(text = stringResource(R.string.product_quant))
                     },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
+                        keyboardType = KeyboardType.Decimal,
                         imeAction = ImeAction.Next
                     )
                 )
@@ -235,6 +261,7 @@ fun Product(product: ViewProduct) {
         Text(text = product.name)
         Text(text = "${product.quant}")
         Text(text = product.unitPrice.currencyFormat())
-        Text(text = product.totalValue.currencyFormat())
+        Text(text = (-product.discount).currencyFormat())
+        Text(text = product.finalValue.currencyFormat())
     }
 }
